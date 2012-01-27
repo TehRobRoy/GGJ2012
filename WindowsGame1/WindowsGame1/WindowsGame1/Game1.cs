@@ -19,7 +19,8 @@ namespace WindowsGame1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         CSprite player;
-
+        float size;
+        Color playerColour;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,6 +49,7 @@ namespace WindowsGame1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player.createSprite(Content, new Vector3(100, 100, 0), "Images/Image");
+            size = 0;
             // TODO: use this.Content to load your game content here
         }
 
@@ -73,6 +75,13 @@ namespace WindowsGame1
 
             // TODO: Add your update logic here
             player.update();
+            size+=0.2f;
+            if (size > 0)
+                playerColour = Color.Red;
+            if (size > 40)
+                playerColour = Color.Orange;
+            if (size > 80)
+                playerColour = Color.Yellow;
             base.Update(gameTime);
         }
 
@@ -85,7 +94,7 @@ namespace WindowsGame1
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            player.draw(spriteBatch);
+            player.draw(spriteBatch, playerColour, size);
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -34,10 +34,10 @@ namespace WindowsGame1
             //m_Pos += m_Dir; //move position with regards to direction
         }
         
-        public void draw(SpriteBatch sb)
+        public void draw(SpriteBatch sb, Color c, float size)
         {
-            m_Rect = new Rectangle((int) m_Pos.X, (int) m_Pos.Y, m_Texture.Width, m_Texture.Height);
-            sb.Draw(m_Texture, m_Rect, Color.White);
+            m_Rect = new Rectangle((int) m_Pos.X, (int) m_Pos.Y, (int) (m_Texture.Width + size), (int) (m_Texture.Height + size));
+            sb.Draw(m_Texture, m_Rect, c);
         }
 
         

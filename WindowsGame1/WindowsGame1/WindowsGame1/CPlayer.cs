@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace WindowsGame1
 {
@@ -12,7 +13,7 @@ namespace WindowsGame1
     {
 
         //player variables go here
-        
+        Vector2 moveVec;
 
         public CPlayer()
         {
@@ -20,12 +21,20 @@ namespace WindowsGame1
             this.moveSpeed = 0;
         }
 
-
-
-        public override void update(Vector2 moveDir)
+        public Vector2 calculatePropulsion(MouseState ms, GraphicsDevice gd)
         {
-            m_Pos += (moveDir * moveSpeed);
-
+            //take in mouse position
+            //calcualte normalised vector
+            //get distance with Vector2.distance(mousePos, screen Centre)
+            //Scale movement by distance?
+            Vector2 mousePos = new Vector2(ms.X,ms.Y);
+            Vector2 playerCentre = new Vector2(gd.Viewport.Width/2,gd.Viewport.Height/2);
+            Vector2 trans = playerCentre - mousePos;
+            trans.Normalize();
+            float dist = Vector2.Distance(mousePos, playerCentre);
+           // dist = (float)Math.Sqrt(dist);
+            moveVec = trans * dist / 10;
+            return moveVec;
         }
 
         //player functions go here

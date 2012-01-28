@@ -16,9 +16,10 @@ namespace WindowsGame1
             this.moveSpeed = 0;
         }
 
-        public override void update(Vector2 moveDir)
+        public override void update(Vector2 moveDir, float elapsed)
         {
-            this.m_Pos -= (moveDir * moveSpeed);
+
+            base.update(moveDir, elapsed);
         }
 
     }

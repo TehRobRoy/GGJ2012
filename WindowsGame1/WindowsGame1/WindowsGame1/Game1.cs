@@ -27,16 +27,15 @@ namespace WindowsGame1
         
         CCamera camera;
 
-        Matrix worldMat;
-        Matrix viewMat;
-        Matrix projMat;
-
         Texture2D background;
         
         CAudio audioPlayer;
         Random rand = new Random();
         Vector2 move;
         KeyboardState lastState;
+        InputHandler input;
+        SamplerState sstate;
+        AnimationManager aManager;
         #endregion
         
         #region non standard functions
@@ -69,6 +68,11 @@ namespace WindowsGame1
             enemy = new CEnemy();
             camera = new CCamera();
             audioPlayer = new CAudio();
+            input = new InputHandler(this);
+            input.Initialize();
+            sstate = new SamplerState();
+            aManager = new AnimationManager(this, "Images/");
+            Components.Add(aManager);
             base.Initialize();
         }
 
@@ -81,12 +85,14 @@ namespace WindowsGame1
             IsMouseVisible = true;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.createSprite(Content, randomPosition(1000, -500), "Images/Player", 1.0f); //create the player sprite
-            enemy.createSprite(Content, randomPosition(1000, -500), "Images/Player", 0.5f);
+            player.createSprite(Content, randomPosition(1000, -500), "Images/sun", 1.0f, 13, 12); //create the player sprite
+            enemy.createSprite(Content, randomPosition(1000, -500), "Images/sun", 0.5f, 13, 8); //create an enemy
             background = Content.Load<Texture2D>("Images/background"); //load background image
             camera.init(player.m_Pos,0.0f, 0.0f); //initalize camera
             audioPlayer.init(Content, "audio");
             size = 0; //set inital size to 0
+            sstate.AddressU = TextureAddressMode.Mirror; //create sstate for mirroring bg image
+            sstate.AddressV = TextureAddressMode.Mirror; //and mirror in both x and y axis
         }
 
         /// <summary>
@@ -106,28 +112,32 @@ namespace WindowsGame1
         {
             // Allows the game to exit
             KeyboardState k = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || k.IsKeyDown(Keys.Escape)) 
                 this.Exit();
-            if (k.IsKeyDown(Keys.Space) && !(lastState.IsKeyDown(Keys.Space)))
+
+            if (mouse.LeftButton == ButtonState.Pressed)
             {
-                move = randomPosition(10, 5);
-                move.Normalize();
+                move = player.calculatePropulsion(mouse, GraphicsDevice);
             }
-            player.update(move);
-            enemy.update(new Vector2(1.0f));
-            Vector2 campos = player.m_Pos;
-            size+=0.1f;
-            
+
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            player.update(move, elapsed);
+            enemy.update(new Vector2(1.0f), elapsed);
+            camera.update(player.m_Pos);
+
+            size+=0.01f;
             if (size > 0)
                 playerColour = Color.Red;
-            if (size > 8)
+            if (size > 1)
                 playerColour = Color.Orange;
-            if (size > 16)
+            if (size > 2)
                 playerColour = Color.Yellow;
-            if (size > 20)
-                size = 20;
-            camera.update(campos);
+            if (size > 3)
+                size = 3;
+            
             base.Update(gameTime);
+            
             lastState = k;
         }
 
@@ -139,13 +149,11 @@ namespace WindowsGame1
         {
             Rectangle bg = new Rectangle(0, 0, 30000, 30000);
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,SamplerState.LinearWrap,DepthStencilState.None,RasterizerState.CullNone,null,camera.transform(GraphicsDevice));
-            spriteBatch.Draw(background,new Vector2(-15000, -15000), bg/*new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.5), 
-                                                       (int)(GraphicsDevice.Viewport.Height * 0.5),
-                                                       background.Width, background.Height)*/, Color.White,0,Vector2.Zero,1,SpriteEffects.None,1);
-            player.draw(spriteBatch, playerColour, size);
-            enemy.draw(spriteBatch, playerColour, 120.0f);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,sstate,DepthStencilState.None,RasterizerState.CullNone,null,camera.transform(GraphicsDevice));
+            spriteBatch.Draw(background, new Vector2(-15000,-15000), bg, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+            //aManager.Draw(gameTime, "Sun", spriteBatch, player.m_Pos);
+            player.DrawFrame(spriteBatch, player.m_Pos, size, playerColour);
+            //enemy.draw(spriteBatch, playerColour, 120.0f);
             spriteBatch.End();
 
             base.Draw(gameTime);

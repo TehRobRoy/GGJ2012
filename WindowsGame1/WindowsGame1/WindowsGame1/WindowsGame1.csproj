@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="CAudio.cs" />
     <Compile Include="CCamera.cs" />
+    <Compile Include="CEnemy.cs" />
+    <Compile Include="CPlayer.cs" />
     <Compile Include="CSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

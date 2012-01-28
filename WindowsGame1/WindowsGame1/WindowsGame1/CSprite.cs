@@ -11,34 +11,26 @@ namespace WindowsGame1
     class CSprite
     {
         public Vector2 m_Pos; //position
-        Vector2 m_Dir; //movement direction
-        Texture2D m_Texture; //texture of sprite
-        Rectangle m_Rect; //rectangle used for drawing sprite
-        /// <summary>
-        /// 
-        /// </summary>
-        public CSprite() //general constructor
-        {
-            m_Pos = new Vector2(0, 0); //set position null
-            m_Dir = new Vector2(0, 0); //set direction null
-        }
+        public Texture2D m_Text; //texture of sprite
+        public float moveSpeed; //movement speed of sprite
 
-        public void createSprite(ContentManager content, Vector2 position, String texName)
+        public void createSprite(ContentManager content, Vector2 position, String texName, float move)
         {
             m_Pos = position; //set position to user input
-            m_Texture = content.Load<Texture2D>(texName); //set texture to texture name
+            m_Text = content.Load<Texture2D>(texName); //set texture to texture name
+            moveSpeed = move;
         }
         
-        public void update(Vector2 moveDir)
+        public virtual void update(Vector2 moveDir)
         {
-            m_Pos.X++;
-            //move position with regards to direction
+            //move position with regards to direction + speed
+            m_Pos += (moveDir * moveSpeed);
         }
         
         public void draw(SpriteBatch sb, Color c, float size)
         {
-            //m_Rect = new Rectangle((int) m_Pos.X, (int) m_Pos.Y, (int) (m_Texture.Width + size), (int) (m_Texture.Height + size));
-            sb.Draw(m_Texture, m_Pos, null, c, 0,new Vector2(m_Texture.Width/2,m_Texture.Height/2),(size/100),0,0);
+            sb.Draw(m_Text, m_Pos, null, c, 0, new Vector2(m_Text.Width / 2, m_Text.Height / 2), (1.0f + (size / 120)), 0, 0);
+
         }
 
         

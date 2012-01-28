@@ -19,7 +19,8 @@ namespace WindowsGame1
         #region variables
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        CSprite player;
+        CPlayer player;
+        CEnemy enemy;
         float size;
         Color playerColour;
         
@@ -51,7 +52,8 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new CSprite();
+            player = new CPlayer();
+            enemy = new CEnemy();
             camera = new CCamera();
             base.Initialize();
         }
@@ -62,12 +64,14 @@ namespace WindowsGame1
         /// </summary>
         protected override void LoadContent()
         {
+            IsMouseVisible = true;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.createSprite(Content, Vector2.Zero, "Images/Player");
-            background = Content.Load<Texture2D>("Images/background");
-            //camera.init(player.m_Pos);
-            size = 0;
+            player.createSprite(Content, Vector2.Zero, "Images/Player", 1.0f); //create the player sprite
+            enemy.createSprite(Content, Vector2.One, "Images/Player", 0.5f);
+            background = Content.Load<Texture2D>("Images/background"); //load background image
+            camera.init(player.m_Pos,0.0f, 0.0f); //initalize camera
+            size = 0; //set inital size to 0
         }
 
         /// <summary>
@@ -87,17 +91,24 @@ namespace WindowsGame1
         {
             // Allows the game to exit
             KeyboardState k = Keyboard.GetState();
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || k.IsKeyDown(Keys.Escape)) 
                 this.Exit();
+            
             player.update(new Vector2(1.0f));
+            enemy.update(new Vector2(1.0f));
+            
             size+=0.5f;
+            
             if (size > 0)
                 playerColour = Color.Red;
             if (size > 40)
                 playerColour = Color.Orange;
             if (size > 80)
                 playerColour = Color.Yellow;
+            
             camera.update(player.m_Pos);
+            
             base.Update(gameTime);
         }
 
@@ -112,6 +123,7 @@ namespace WindowsGame1
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null,camera.transform(GraphicsDevice));
             spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
             player.draw(spriteBatch, playerColour, size);
+            enemy.draw(spriteBatch, playerColour, 120.0f);
             spriteBatch.End();
 
             base.Draw(gameTime);

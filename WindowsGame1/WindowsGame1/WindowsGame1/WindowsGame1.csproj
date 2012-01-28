@@ -121,6 +121,10 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\InputLib\InputLib\InputLib.csproj">
+      <Project>{DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244}</Project>
+      <Name>InputLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WindowsGame1Content\WindowsGame1Content.contentproj">
       <Name>WindowsGame1Content</Name>
       <XnaReferenceType>Content</XnaReferenceType>

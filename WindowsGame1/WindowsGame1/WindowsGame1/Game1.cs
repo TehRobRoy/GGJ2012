@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using InputLib;
 
 namespace WindowsGame1
 {
@@ -33,10 +34,19 @@ namespace WindowsGame1
         Texture2D background;
         
         CAudio audioPlayer;
-        
-        
+        Random rand = new Random();
+        Vector2 move;
+        KeyboardState lastState;
         #endregion
+        
         #region non standard functions
+        Vector2 randomPosition(float range, float start)
+        {
+            float x = (float)rand.NextDouble() * range - start;
+            float y = (float)rand.NextDouble() * range - start;
+            Vector2 randomVec = new Vector2(x, y);
+            return randomVec;
+        }
 
         #endregion
         
@@ -71,8 +81,8 @@ namespace WindowsGame1
             IsMouseVisible = true;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.createSprite(Content, Vector2.Zero, "Images/Player", 1.0f); //create the player sprite
-            enemy.createSprite(Content, Vector2.One, "Images/Player", 0.5f);
+            player.createSprite(Content, randomPosition(1000, -500), "Images/Player", 1.0f); //create the player sprite
+            enemy.createSprite(Content, randomPosition(1000, -500), "Images/Player", 0.5f);
             background = Content.Load<Texture2D>("Images/background"); //load background image
             camera.init(player.m_Pos,0.0f, 0.0f); //initalize camera
             //audioPlayer.init(Content, "audio");
@@ -96,24 +106,29 @@ namespace WindowsGame1
         {
             // Allows the game to exit
             KeyboardState k = Keyboard.GetState();
-            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || k.IsKeyDown(Keys.Escape)) 
                 this.Exit();
-
-            player.update(new Vector2(1.0f));
+            if (k.IsKeyDown(Keys.Space) && !(lastState.IsKeyDown(Keys.Space)))
+            {
+                move = randomPosition(10, 5);
+                move.Normalize();
+            }
+            player.update(move);
             enemy.update(new Vector2(1.0f));
-            
-            size+=0.5f;
+            Vector2 campos = player.m_Pos;
+            size+=0.1f;
             
             if (size > 0)
                 playerColour = Color.Red;
-            if (size > 40)
+            if (size > 8)
                 playerColour = Color.Orange;
-            if (size > 80)
+            if (size > 16)
                 playerColour = Color.Yellow;
-            
-            camera.update(player.m_Pos);
+            if (size > 20)
+                size = 20;
+            camera.update(campos);
             base.Update(gameTime);
+            lastState = k;
         }
 
         /// <summary>
@@ -125,7 +140,9 @@ namespace WindowsGame1
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null,camera.transform(GraphicsDevice));
-            spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
+            spriteBatch.Draw(background, new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.5), 
+                                                       (int)(GraphicsDevice.Viewport.Height * 0.5),
+                                                       background.Width, background.Height), Color.White);
             player.draw(spriteBatch, playerColour, size);
             enemy.draw(spriteBatch, playerColour, 120.0f);
             spriteBatch.End();

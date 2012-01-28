@@ -2,8 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGame1", "WindowsGame1\WindowsGame1\WindowsGame1.csproj", "{1BC324F3-FAB6-4AFA-8B40-71A6D7943126}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244} = {DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244}
+	EndProjectSection
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "WindowsGame1Content", "WindowsGame1\WindowsGame1Content\WindowsGame1Content.contentproj", "{867BA6F2-B1C2-472B-B31A-9F8455521E55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGame1Content", "WindowsGame1\WindowsGame1Content\WindowsGame1Content.contentproj", "{867BA6F2-B1C2-472B-B31A-9F8455521E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputLib", "InputLib\InputLib\InputLib.csproj", "{DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +22,10 @@ Global
 		{1BC324F3-FAB6-4AFA-8B40-71A6D7943126}.Release|x86.Build.0 = Release|x86
 		{867BA6F2-B1C2-472B-B31A-9F8455521E55}.Debug|x86.ActiveCfg = Debug|x86
 		{867BA6F2-B1C2-472B-B31A-9F8455521E55}.Release|x86.ActiveCfg = Release|x86
+		{DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244}.Debug|x86.ActiveCfg = Debug|x86
+		{DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244}.Debug|x86.Build.0 = Debug|x86
+		{DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244}.Release|x86.ActiveCfg = Release|x86
+		{DF5DC12C-9646-4C5C-AC8E-E2C1DAF19244}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

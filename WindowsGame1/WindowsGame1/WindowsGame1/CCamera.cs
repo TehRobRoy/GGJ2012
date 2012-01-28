@@ -9,7 +9,7 @@ namespace WindowsGame1
 {
     class CCamera
     {
-        Vector2 position;
+        public Vector2 position;
         float rotation;
         float zoom;
         Matrix m_Trans;

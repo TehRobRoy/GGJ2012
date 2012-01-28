@@ -29,7 +29,7 @@ namespace WindowsGame1
         
         public void draw(SpriteBatch sb, Color c, float size)
         {
-            sb.Draw(m_Text, m_Pos, null, c, 0, new Vector2(m_Text.Width / 2, m_Text.Height / 2), (1.0f + (size / 120)), 0, 0);
+            sb.Draw(m_Text, m_Pos, null, c, 0, new Vector2(m_Text.Width / 2, m_Text.Height / 2), (0.5f + (size / 120)), 0, 0);
 
         }
 

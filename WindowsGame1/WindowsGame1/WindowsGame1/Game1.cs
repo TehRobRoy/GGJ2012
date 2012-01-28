@@ -85,7 +85,7 @@ namespace WindowsGame1
             enemy.createSprite(Content, randomPosition(1000, -500), "Images/Player", 0.5f);
             background = Content.Load<Texture2D>("Images/background"); //load background image
             camera.init(player.m_Pos,0.0f, 0.0f); //initalize camera
-            //audioPlayer.init(Content, "audio");
+            audioPlayer.init(Content, "audio");
             size = 0; //set inital size to 0
         }
 
@@ -137,12 +137,13 @@ namespace WindowsGame1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            Rectangle bg = new Rectangle(0, 0, 30000, 30000);
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null,camera.transform(GraphicsDevice));
-            spriteBatch.Draw(background, new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.5), 
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,SamplerState.LinearWrap,DepthStencilState.None,RasterizerState.CullNone,null,camera.transform(GraphicsDevice));
+            spriteBatch.Draw(background,new Vector2(-15000, -15000), bg/*new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.5), 
                                                        (int)(GraphicsDevice.Viewport.Height * 0.5),
-                                                       background.Width, background.Height), Color.White);
+                                                       background.Width, background.Height)*/, Color.White,0,Vector2.Zero,1,SpriteEffects.None,1);
             player.draw(spriteBatch, playerColour, size);
             enemy.draw(spriteBatch, playerColour, 120.0f);
             spriteBatch.End();

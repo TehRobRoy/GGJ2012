@@ -10,7 +10,7 @@ namespace WindowsGame1
 {
     class CSprite
     {
-        Vector3 m_Pos; //position
+        public Vector3 m_Pos; //position
         Vector3 m_Dir; //movement direction
         Texture2D m_Texture; //texture of sprite
         Rectangle m_Rect; //rectangle used for drawing sprite

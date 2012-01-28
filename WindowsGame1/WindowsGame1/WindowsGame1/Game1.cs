@@ -16,11 +16,36 @@ namespace WindowsGame1
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        #region variables
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         CSprite player;
         float size;
         Color playerColour;
+        
+        CCamera camera;
+
+        Matrix worldMat;
+        Matrix viewMat;
+        Matrix projMat;
+        #endregion
+        #region non standard functions
+
+        private void initWorld()
+        {
+            worldMat = Matrix.Identity;
+
+            viewMat = camera.camViewMat;
+
+            projMat = Matrix.CreatePerspectiveFieldOfView(
+                MathHelper.ToRadians(45),
+                (float)graphics.GraphicsDevice.Viewport.Width /
+                (float)graphics.GraphicsDevice.Viewport.Height,
+                0.0f, 20.0f);
+        }
+
+        #endregion
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -37,6 +62,7 @@ namespace WindowsGame1
         {
             // TODO: Add your initialization logic here
             player = new CSprite();
+            camera = new CCamera();
             base.Initialize();
         }
 
@@ -48,9 +74,9 @@ namespace WindowsGame1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.createSprite(Content, new Vector3(100, 100, 0), "Images/Image");
+            player.createSprite(Content, new Vector3(0, 0, 0), "Images/single player star");
+            camera.init(player.m_Pos);
             size = 0;
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -59,7 +85,6 @@ namespace WindowsGame1
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -70,10 +95,9 @@ namespace WindowsGame1
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            KeyboardState k = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || k.IsKeyDown(Keys.Escape)) 
                 this.Exit();
-
-            // TODO: Add your update logic here
             player.update();
             size+=0.2f;
             if (size > 0)
@@ -82,6 +106,7 @@ namespace WindowsGame1
                 playerColour = Color.Orange;
             if (size > 80)
                 playerColour = Color.Yellow;
+            camera.update(player.m_Pos);
             base.Update(gameTime);
         }
 
@@ -91,9 +116,9 @@ namespace WindowsGame1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Wheat);
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,null,null,null,null,camera.camViewMat);
             player.draw(spriteBatch, playerColour, size);
             spriteBatch.End();
 

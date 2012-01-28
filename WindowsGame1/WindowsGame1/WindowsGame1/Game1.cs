@@ -28,21 +28,11 @@ namespace WindowsGame1
         Matrix worldMat;
         Matrix viewMat;
         Matrix projMat;
+
+        Texture2D background;
+
         #endregion
         #region non standard functions
-
-        private void initWorld()
-        {
-            worldMat = Matrix.Identity;
-
-            viewMat = camera.camViewMat;
-
-            projMat = Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.ToRadians(45),
-                (float)graphics.GraphicsDevice.Viewport.Width /
-                (float)graphics.GraphicsDevice.Viewport.Height,
-                0.0f, 20.0f);
-        }
 
         #endregion
         
@@ -74,8 +64,9 @@ namespace WindowsGame1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.createSprite(Content, new Vector3(0, 0, 0), "Images/single player star");
-            camera.init(player.m_Pos);
+            player.createSprite(Content, Vector2.Zero, "Images/Player");
+            background = Content.Load<Texture2D>("Images/background");
+            //camera.init(player.m_Pos);
             size = 0;
         }
 
@@ -98,8 +89,8 @@ namespace WindowsGame1
             KeyboardState k = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || k.IsKeyDown(Keys.Escape)) 
                 this.Exit();
-            player.update();
-            size+=0.2f;
+            player.update(new Vector2(1.0f));
+            size+=0.5f;
             if (size > 0)
                 playerColour = Color.Red;
             if (size > 40)
@@ -118,7 +109,8 @@ namespace WindowsGame1
         {
             GraphicsDevice.Clear(Color.Wheat);
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,null,null,null,null,camera.camViewMat);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null,camera.transform(GraphicsDevice));
+            spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
             player.draw(spriteBatch, playerColour, size);
             spriteBatch.End();
 
@@ -126,6 +118,3 @@ namespace WindowsGame1
         }
     }
 }
-
-
-//comment goes here

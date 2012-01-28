@@ -42,15 +42,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\Image.bmp">
-      <Name>Image</Name>
+    <Compile Include="Images\single player star.png">
+      <Name>single player star</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\single player star.png">
-      <Name>single player star</Name>
+    <Compile Include="Images\Player.png">
+      <Name>Player</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\background.jpg">
+      <Name>background</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

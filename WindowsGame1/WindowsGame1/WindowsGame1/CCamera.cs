@@ -9,22 +9,30 @@ namespace WindowsGame1
 {
     class CCamera
     {
-        Vector3 position;
-        Vector3 lookat;
-        public Matrix camViewMat;
+        Vector2 position;
+        float rotation;
+        float zoom;
+        Matrix m_Trans;
 
-        public void init(Vector3 p)
+        public void init(Vector2 p, float z, float rot)
         {
             position = p;
-            position.Z += 10;
-            lookat = Vector3.Forward;
-            camViewMat = Matrix.CreateTranslation(position);
+            zoom = z;
+            rotation = rot;
+
         }
-        public void update(Vector3 p)
+        public void update(Vector2 p)
         {
             position = p;
-            position.Z += 10;
-            camViewMat = Matrix.CreateTranslation(position);
+        }
+
+        public Matrix transform(GraphicsDevice graphicsDevice)
+        {
+            m_Trans = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
+                                //Matrix.CreateRotationZ(Rotation) *
+                                //Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+                                Matrix.CreateTranslation(new Vector3(graphicsDevice.Viewport.Width * 0.5f, graphicsDevice.Viewport.Height * 0.5f, 0));
+            return m_Trans;
         }
     }
 }

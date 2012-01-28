@@ -31,7 +31,10 @@ namespace WindowsGame1
         Matrix projMat;
 
         Texture2D background;
-
+        
+        CAudio audioPlayer;
+        
+        
         #endregion
         #region non standard functions
 
@@ -55,6 +58,7 @@ namespace WindowsGame1
             player = new CPlayer();
             enemy = new CEnemy();
             camera = new CCamera();
+            audioPlayer = new CAudio();
             base.Initialize();
         }
 
@@ -71,6 +75,7 @@ namespace WindowsGame1
             enemy.createSprite(Content, Vector2.One, "Images/Player", 0.5f);
             background = Content.Load<Texture2D>("Images/background"); //load background image
             camera.init(player.m_Pos,0.0f, 0.0f); //initalize camera
+            //audioPlayer.init(Content, "audio");
             size = 0; //set inital size to 0
         }
 
@@ -94,7 +99,7 @@ namespace WindowsGame1
             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || k.IsKeyDown(Keys.Escape)) 
                 this.Exit();
-            
+
             player.update(new Vector2(1.0f));
             enemy.update(new Vector2(1.0f));
             
@@ -108,7 +113,6 @@ namespace WindowsGame1
                 playerColour = Color.Yellow;
             
             camera.update(player.m_Pos);
-            
             base.Update(gameTime);
         }
 
@@ -118,7 +122,7 @@ namespace WindowsGame1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Wheat);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null,camera.transform(GraphicsDevice));
             spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);

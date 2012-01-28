@@ -19,7 +19,6 @@ namespace WindowsGame1
             position = p;
             zoom = z;
             rotation = rot;
-
         }
         public void update(Vector2 p)
         {
@@ -29,8 +28,8 @@ namespace WindowsGame1
         public Matrix transform(GraphicsDevice graphicsDevice)
         {
             m_Trans = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
-                                //Matrix.CreateRotationZ(Rotation) *
-                                //Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+                                //Matrix.CreateRotationZ(rotation) *
+                                //Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
                                 Matrix.CreateTranslation(new Vector3(graphicsDevice.Viewport.Width * 0.5f, graphicsDevice.Viewport.Height * 0.5f, 0));
             return m_Trans;
         }

@@ -14,7 +14,6 @@ namespace Nebula
 
         //player variables go here
         Vector2 moveVec;
-
         public CPlayer()
         {
             this.m_Pos = new Vector2(0, 0); //set position null
@@ -36,7 +35,7 @@ namespace Nebula
             moveVec = trans * dist / 40;
             return moveVec;
         }
-
+        
         //player functions go here
     }
 }

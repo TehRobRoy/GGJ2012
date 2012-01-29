@@ -52,6 +52,7 @@ namespace Nebula
                 if (mouse.LeftButton == ButtonState.Released &&
                     lastMouse.LeftButton == ButtonState.Pressed)
                 {
+                    clicked = true;
                     if (this.Clicked != null)
                     {
                         this.Clicked(this, new System.EventArgs());
@@ -61,7 +62,7 @@ namespace Nebula
                 {
                     
                     this.actualTextureToDisplay = this.clickedTexture;
-                    clicked = true;
+                    
                 }
                 
             }

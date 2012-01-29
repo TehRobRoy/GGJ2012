@@ -15,7 +15,8 @@ public enum gameState
     gs_Game,
     gs_Info,
     gs_Info2,
-    gs_Credits
+    gs_Credits,
+    gs_gameover
 };
 namespace Nebula
 {
@@ -52,7 +53,7 @@ namespace Nebula
         MouseState lastMouse;
 
 
-        Button startButton, menuButton, exitButton, backButton, nextButton, creditsButton;
+        Button startButton, menuButton, exitButton, backButton, nextButton, creditsButton, quit2Button;
 
         SpriteFont debugFont;
         SamplerState sstate;
@@ -104,15 +105,15 @@ namespace Nebula
             startButton = new Button(this, "Images/Buttons/start1",
                                         "Images/Buttons/start2",
                                         "Images/Buttons/start3",
-                                        new Vector2(350, 90));
+                                        new Vector2(350, 110));
             menuButton = new Button(this, "Images/Buttons/help1",
                                         "Images/Buttons/help2",
                                         "Images/Buttons/help3",
-                                        new Vector2(350, 180));
+                                        new Vector2(275, 200));
             exitButton = new Button(this, "Images/Buttons/quit1",
                                         "Images/Buttons/quit2",
                                         "Images/Buttons/quit3",
-                                        new Vector2(350, 270));
+                                        new Vector2(425, 200));
             backButton = new Button(this, "Images/Buttons/back1",
                                         "Images/Buttons/back2",
                                         "Images/Buttons/back3",
@@ -125,6 +126,10 @@ namespace Nebula
                                         "Images/Buttons/credits2",
                                         "Images/Buttons/credits3",
                                         new Vector2(730, 50));
+            quit2Button = new Button(this, "Images/Buttons/quit1",
+                                        "Images/Buttons/quit2",
+                                        "Images/Buttons/quit3",
+                                        new Vector2(80, 450));
             base.Initialize();
         }
 
@@ -142,6 +147,7 @@ namespace Nebula
             {
                 CEnemy e = new CEnemy();
                 e.alive = true;
+                e.move = new Vector2((float)rand.NextDouble() * 2 - 1, (float)rand.NextDouble() * 2 - 1);
                 e.createSprite(Content, randomPosition(30000, 15000), "Images/Sprites/enemy spritesheet", 0.5f, 13, 8); //create an enemy
                 e.scale = (float)rand.NextDouble() * 10 + 1; //create a random size for the enemy
                 enemies.Add(e); //add the enemy to the enemy list
@@ -158,10 +164,10 @@ namespace Nebula
             info2 = Content.Load<Texture2D>("Images/instructions page two");
             banner = Content.Load<Texture2D>("Images/Nebula");
             credits = Content.Load<Texture2D>("Images/Credits Mockup");
-            barhealth = 0; //set initial health to 0
+            barhealth = 10; //set initial health to 0
             camera.init(player.m_Pos, 0.2f, 0.0f); //initalize camera
             audioPlayer.init(Content, "audio"); //load in the background music and play it.
-            size = 10.0f; //set inital size to 0
+            size = 20.0f; //set inital size to 0
             debugFont = Content.Load<SpriteFont>("Font/debugFont"); //create a spritefont used for drawing text on the screen
             sstate.AddressU = TextureAddressMode.Mirror; //create sstate for mirroring bg image
             sstate.AddressV = TextureAddressMode.Mirror; //and mirror in both x and y axis
@@ -245,24 +251,35 @@ namespace Nebula
                         Rectangle playerrec = new Rectangle((int)player.m_Pos.X, (int)player.m_Pos.Y,
                                                             (player.m_Text.Width / player.framecount),
                                                             player.m_Text.Height);
+                        
                         foreach (CEnemy e in enemies)
                         {
                             if (e.alive)
                             {
-                                e.update(new Vector2(1.0f, 0.5f), elapsed);
+                                e.update(e.move * 3, elapsed);
                                 Rectangle rE = new Rectangle((int)e.m_Pos.X, (int)e.m_Pos.Y,
                                                               (e.m_Text.Width / e.framecount),
                                                               e.m_Text.Height);
+                                bool coll = false;
                                 if (rE.Intersects(playerrec))
                                 {
-
-                                    e.alive = false;
-                                    size += 3f;
-                                    barhealth += 3;
+                                    coll = true;
+                                    
 
                                 }
+                                if (coll == true && (e.scale < player.scale))
+                                {
+                                    e.alive = false;
+                                    size += 3.0f;
+                                    barhealth += 5;
+                                }
+                                else if (coll == true && (e.scale > player.scale))
+                                {
+                                    e.alive = false;
+                                    size -= 3.0f;
+                                    barhealth -= 5;
+                                }
                             }
-
 
                         }
                         foreach (CObject o in statObjects)
@@ -274,11 +291,14 @@ namespace Nebula
 
 
                         if (size > 0)
-                            playerColour = Color.Red;
-                        if (size > 20)
-                            playerColour = Color.Orange;
+                            playerColour = Color.Blue;
                         if (size > 40)
+                            playerColour = Color.Orange;
+                        if (size > 80)
                             playerColour = Color.Yellow;
+
+                        if (size < 1 || barhealth < 0)
+                            gs = gameState.gs_gameover;
                         
                         break;
                     }
@@ -288,7 +308,13 @@ namespace Nebula
                             gs = gameState.gs_Menu;
                         break;
                     }
-
+                case gameState.gs_gameover:
+                    {
+                        quit2Button.Update(mouse, lastMouse);
+                        if (quit2Button.clicked == true)
+                            Exit();
+                        break;
+                    }
             }
 
             base.Update(gameTime);
@@ -368,6 +394,14 @@ namespace Nebula
                         spriteBatch.Begin();
                         spriteBatch.Draw(credits, GraphicsDevice.Viewport.Bounds, Color.White);
                         backButton.Draw(spriteBatch);
+                        spriteBatch.End();
+                        break;
+                    }
+                case gameState.gs_gameover:
+                    {
+                        spriteBatch.Begin();
+                        spriteBatch.Draw(credits, GraphicsDevice.Viewport.Bounds, Color.White);
+                        quit2Button.Draw(spriteBatch);
                         spriteBatch.End();
                         break;
                     }

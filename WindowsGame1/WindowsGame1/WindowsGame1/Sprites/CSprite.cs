@@ -21,6 +21,7 @@ namespace Nebula
         public int FrameWidth;
         public Rectangle sourcerect;
         public bool alive = false;
+        public float scale;
         
         public void createSprite(ContentManager content, Vector2 position, String texName, float move, int frameCount, int framesPerSec)
         {
@@ -54,6 +55,7 @@ namespace Nebula
 
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos, float Scale, Color c)
         {
+            scale = Scale;
             FrameWidth = m_Text.Width / framecount;
             sourcerect = new Rectangle(FrameWidth * Frame, 0,
                 FrameWidth, m_Text.Height);

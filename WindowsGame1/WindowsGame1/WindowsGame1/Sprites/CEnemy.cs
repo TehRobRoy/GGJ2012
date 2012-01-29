@@ -12,6 +12,7 @@ namespace Nebula
     {
         public float scale;
         //public Color[] enemyTextureData;
+        public Vector2 move;
         public CEnemy()
         {
             this.m_Pos = Vector2.Zero;

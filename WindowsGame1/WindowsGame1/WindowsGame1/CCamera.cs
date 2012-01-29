@@ -11,7 +11,7 @@ namespace WindowsGame1
     {
         public Vector2 position;
         float rotation;
-        float zoom;
+        public float zoom;
         Matrix m_Trans;
 
         public void init(Vector2 p, float z, float rot)
@@ -24,12 +24,19 @@ namespace WindowsGame1
         {
             position = p;
         }
-
+        public void Zoom(float z)
+        {
+            zoom = z;
+            if (zoom > 2)
+                zoom =2;
+            if (zoom < 0.2f)
+                zoom = 0.2f;
+        }
         public Matrix transform(GraphicsDevice graphicsDevice)
         {
             m_Trans = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
                                 //Matrix.CreateRotationZ(rotation) *
-                                //Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
+                                Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
                                 Matrix.CreateTranslation(new Vector3(graphicsDevice.Viewport.Width * 0.5f, graphicsDevice.Viewport.Height * 0.5f, 0));
             return m_Trans;
         }

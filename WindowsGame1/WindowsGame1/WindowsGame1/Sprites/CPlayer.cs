@@ -33,7 +33,7 @@ namespace WindowsGame1
             trans.Normalize();
             float dist = Vector2.Distance(mousePos, playerCentre);
            // dist = (float)Math.Sqrt(dist);
-            moveVec = trans * dist / 10;
+            moveVec = trans * dist / 40;
             return moveVec;
         }
 

@@ -1,5 +1,14 @@
-Content\Images\single player star.xnb
+Content\Images\object.xnb
 Content\Images\background.xnb
+Content\Images\o.xnb
 Content\Images\sun.xnb
+Content\Images\nebula sprite.xnb
+Content\Images\bar.xnb
 Content\audio.xnb
+Content\Font\debugFont.xnb
+Content\Font\gameFont.xnb
+Content\Font\menuLarge.xnb
+Content\Font\menuSmall.xnb
+Content\Images\explosion sheet.xnb
+Content\Images\enemy spritesheet.xnb
 Content\audio.wma

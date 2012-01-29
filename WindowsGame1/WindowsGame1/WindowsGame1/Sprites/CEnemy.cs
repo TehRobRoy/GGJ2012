@@ -10,6 +10,7 @@ namespace WindowsGame1
 {
     class CEnemy:CSprite
     {
+        public float scale;
         public CEnemy()
         {
             this.m_Pos = Vector2.Zero;

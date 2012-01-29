@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGame1", "WindowsGame1\WindowsGame1\WindowsGame1.csproj", "{1BC324F3-FAB6-4AFA-8B40-71A6D7943126}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula", "WindowsGame1\WindowsGame1\Nebula.csproj", "{1BC324F3-FAB6-4AFA-8B40-71A6D7943126}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGame1Content", "WindowsGame1\WindowsGame1Content\WindowsGame1Content.contentproj", "{867BA6F2-B1C2-472B-B31A-9F8455521E55}"
 EndProject

@@ -1,6 +1,6 @@
 using System;
 
-namespace WindowsGame1
+namespace Nebula
 {
 #if WINDOWS || XBOX
     static class Program

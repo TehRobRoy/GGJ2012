@@ -6,19 +6,22 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-namespace WindowsGame1
+namespace Nebula
 {
     class CSprite
     {
         public Vector2 m_Pos; //position
         public Texture2D m_Text; //texture of sprite
         public float moveSpeed; //movement speed of sprite
-        private int framecount; //number of animation steps
+        public int framecount; //number of animation steps
         private float TimePerFrame; //time between each animation frame
         private int Frame; //frame number
         private float TotalElapsed; //total time elapsed
         private bool Paused; //is animation paused?
-
+        public int FrameWidth;
+        public Rectangle sourcerect;
+        public bool alive = false;
+        
         public void createSprite(ContentManager content, Vector2 position, String texName, float move, int frameCount, int framesPerSec)
         {
             m_Pos = position; //set position to user input
@@ -51,8 +54,8 @@ namespace WindowsGame1
 
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos, float Scale, Color c)
         {
-            int FrameWidth = m_Text.Width / framecount;
-            Rectangle sourcerect = new Rectangle(FrameWidth * Frame, 0,
+            FrameWidth = m_Text.Width / framecount;
+            sourcerect = new Rectangle(FrameWidth * Frame, 0,
                 FrameWidth, m_Text.Height);
             //draw sprite at animation step
             batch.Draw(m_Text, screenPos, sourcerect, c,

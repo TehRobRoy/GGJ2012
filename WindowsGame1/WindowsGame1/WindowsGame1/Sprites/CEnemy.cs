@@ -6,11 +6,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-namespace WindowsGame1
+namespace Nebula
 {
     class CEnemy:CSprite
     {
         public float scale;
+        //public Color[] enemyTextureData;
         public CEnemy()
         {
             this.m_Pos = Vector2.Zero;
@@ -21,6 +22,10 @@ namespace WindowsGame1
         {
 
             base.update(moveDir, elapsed);
+        }
+        public void draw()
+        {
+            //enemyTextureData;
         }
 
     }

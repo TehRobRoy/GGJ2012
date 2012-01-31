@@ -371,7 +371,7 @@ namespace Nebula
                         player.DrawFrame(spriteBatch, player.m_Pos, (size / 10), playerColour);
                         foreach (CEnemy e in enemies)
                         {
-                            if (e.alive)
+                            if (e.alive)    
                             {
                                 e.DrawFrame(spriteBatch, e.m_Pos, e.scale, Color.OrangeRed);
                             }
